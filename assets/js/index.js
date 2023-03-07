@@ -103,11 +103,23 @@ $(document).ready(function() {
   const imgUrls = ['/../assets/img/Rectangle2878.png', '/../assets/img/Rectangle2856.png', '/../assets/img/Rectangle2870.png']
   let index = 0;
   const intervalTime = 1000 * 4;
+  let interval;
 
-  setInterval(() => {
+  function changeMolecule() {
     index = (index + 1) % select.length;
     const selectedOption = selectList.find(`li[value='${select[index]}']`);
     selectedOption.addClass('select-box-selected').siblings().removeClass('select-box-selected');
     $('.content-bg').css("background-image", `url(${imgUrls[index]})`);  
-  }, intervalTime);
+  }
+
+  interval = setInterval(changeMolecule, intervalTime);
+
+  selectList.on('click', 'li', function() {
+    clearInterval(interval);
+    $(this).addClass('select-box-selected').siblings().removeClass('select-box-selected');
+    index = $(this).index();
+    $('.content-bg').css("background-image", `url(${imgUrls[index]})`);
+    interval = setInterval(changeMolecule, intervalTime);
+    
+  });
 });
